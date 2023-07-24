@@ -6,23 +6,17 @@ from flask import Flask,render_template,session,redirect,url_for,jsonify,send_fr
 app = Flask(__name__,template_folder='template')
 
 #Routers
-@app.route("/",methods=["GET"])
+@app.route("/home",methods=["GET"])
 def home():
     return render_template("home.html")
 
-@app.route("/cov",methods=["GET"])
+@app.route("/",methods=["GET"])
 def cov():
     return render_template("cov_letter.html")
-
-@app.route("/project",methods=["GET"])
-def proj():
-    return render_template("project.html")
 
 @app.route("/echo/<text>")
 def repeat(text):
     return render_template("text.html",txt=text)
-
-
 
 #Run
 if __name__ == "__main__":
