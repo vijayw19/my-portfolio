@@ -51,7 +51,7 @@ jobs:
         curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
     - name: Deploy to AKS
-      run: echo "Deploying to env ${{inputs.environment}}"
       run: |
+        echo "Deploying to env ${{inputs.environment}}"
         az aks get-credentials --resource-group amvi-AKS-dev --name azaks-amvi-dev
         kubectl apply -f kubernetes_resources/deployment.yaml
