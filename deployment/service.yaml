@@ -1,0 +1,20 @@
+apiVersion: v1
+ # The type of workload we are creating 
+kind: Service
+metadata:
+# Name of Service - Required
+  name: vijay-portfolio-loadbalancer
+# Specific details about the Service
+spec:
+# Type of Service to be deployed
+  type: LoadBalancer
+  ports:
+  - port: 80
+  # Used to tell the Service which Pods to associate with
+  selector:
+    app: vijay-portfolio
+  ports:
+  - protocol: TCP
+    port: 80 # Port on which the service will be exposed
+    targetPort: 5002 # Port your Python app is listening on
+  type: LoadBalancer # Change to "ClusterIP" if you don't need external access
