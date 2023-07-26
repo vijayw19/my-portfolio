@@ -3,10 +3,10 @@
 
 name: Build and Push Docker Image to ACR
 
-on:
-  push:
-    branches:
-      - develop # Replace 'main' with your main branch name
+#on:
+#  push:
+#    branches:
+#      - main # Replace 'main' with your main branch name
 env:
   IMAGE_NAME: vijay-portfolio-amvi # Replace 'your-image-name' with the name you want for your Docker image
   REGISTRY: amviacrdev.azurecr.io # Replace 'your-acr-name' with your Azure Container Registry name
