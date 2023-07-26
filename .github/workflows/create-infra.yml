@@ -44,9 +44,9 @@
 
 name: 'Create Infrastructure'
 
-#on:
-  #push:
-    #branches: [ "main" ]
+on:
+  push:
+    branches: [ "main" ]
   # pull_request:
 
 permissions:
