@@ -7,6 +7,12 @@ on:
   push:
     branches:
       - main # Replace 'main' with your main branch name
+env:
+  IMAGE_NAME: vijay-portfolio-amvi # Replace 'your-image-name' with the name you want for your Docker image
+  REGISTRY: amviacrdev.azurecr.io # Replace 'your-acr-name' with your Azure Container Registry name
+  REGISTRY_USERNAME: amviacrdev # Replace 'your-acr-username' with the ACR username
+  REGISTRY_PASSWORD: ${{ secrets.ACR_PASSWORD }} # Add your ACR access key as a GitHub secret in the repository settings
+
 
 jobs:
   build-and-push:
