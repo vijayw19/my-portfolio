@@ -1,0 +1,57 @@
+name: Deploy to AKS
+
+on:
+  pull_request:
+    types: [ closed ]
+
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+        - info
+        - warning
+        - debug
+      tags:
+        description: 'Test scenario tags'
+        required: false
+        type: boolean
+      environment:
+        description: 'Environment to deploy'
+        type: environment
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Set Azure subscription
+      run: az account set --subscription ${{secrets.SUBSCRIPTION_ID}}
+
+    #- name: Build and push Docker image
+    #  run: |
+    #    docker build -t <YOUR_DOCKER_IMAGE_TAG> .
+    #    docker login <REGISTRY_URL> -u <USERNAME> -p ${{ secrets.REGISTRY_PASSWORD }}
+    #    docker push <YOUR_DOCKER_IMAGE_TAG>
+
+    - name: Install Azure CLI
+      run: |
+        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+    - name: Deploy to AKS
+      run: echo "Deploying to env ${{inputs.environment}}"
+      run: |
+        az aks get-credentials --resource-group amvi-AKS-dev --name azaks-amvi-dev
+        kubectl apply -f kubernetes_resources/deployment.yaml
