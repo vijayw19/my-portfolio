@@ -9,6 +9,12 @@ name: My Portfolio
   #pull_request:
   #  branches: [ "main" ]
 
+env:
+  IMAGE_NAME: vijay-portfolio-amvi # Replace 'your-image-name' with the name you want for your Docker image
+  REGISTRY: amviacrdev.azurecr.io # Replace 'your-acr-name' with your Azure Container Registry name
+  REGISTRY_USERNAME: amviacrdev # Replace 'your-acr-username' with the ACR username
+  REGISTRY_PASSWORD: ${{ secrets.ACR_PASSWORD }} # Add your ACR access key as a GitHub secret in the repository settings
+
 permissions:
   contents: read
 
@@ -28,9 +34,18 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: run app
-      run: python app.py
-      
-    - name: Test with pytest
+    
+     name: Login to Azure Container Registry
+      run: docker login ${{ env.REGISTRY }} -u ${{ env.REGISTRY_USERNAME }} -p ${{ env.REGISTRY_PASSWORD }}
+
+    - name: Build and push Docker image
       run: |
-        pytest
+        docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} .
+        docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+
+    #- name: run app
+    #  run: python app.py
+      
+    #- name: Test with pytest
+    #  run: |
+    #    pytest
